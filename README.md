@@ -21,8 +21,34 @@ Add the `@JNIProxy` annotation on
 
 to generate C++ proxies at compile time.
 
+```java
+package com.tecnyse.sample.integration;
+
+import com.tecnyse.integration.JNIProxy;
+
+@JNIProxy
+public class MyClass {
+
+  @JNIProxy
+  public int foo() {
+    return 1;
+  }
+  
+  @JNIProxy
+  public static String bar(int arg1, String arg2) {
+    return arg2 + arg1;
+  }
+}
+```
+
+The above will generate 2 files in `com/tecnyse/samples/integration` (the package):
+
+- `myclass.h`: declares the JNI proxy for `MyClass` as a C++ class in the `com::tecnyse::samples::integration` namespace.
+- `myclass.cpp`: defines the JNI bindings for MyClass.
+
 ## Getting Started
 
 - Put the JNIBridgeGenerator jar on your classpath
 - Add the `com.tecnyse.integration.processor.JNIProxyProcessor` processor in your services manifest.
+- Annotate.
 - Compile!
