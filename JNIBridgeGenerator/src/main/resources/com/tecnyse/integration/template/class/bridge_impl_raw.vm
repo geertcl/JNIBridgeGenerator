@@ -1,0 +1,55 @@
+## Copyright (c) 2015 Geert Claeys, Apache License 2.0
+#parse("/com/tecnyse/integration/template/bridge_macros.vm")
+\#include <iostream>
+
+\#include "${proxyClass.className}.h"
+\#include <com/tecnyse/integration/defines.h>
+\#include <com/tecnyse/integration/jni_bridge.h>
+
+jclass ${proxyClass.namespace}::java_class=0;
+#foreach($method in $proxyClass.methods)
+jmethodID ${proxyClass.namespace}::${method.uniqueName}_id=0;
+#end
+
+static_init_helper ${proxyClass.namespace}::${proxyClass.className}::object_init_helper=static_init_helper(&${proxyClass.className}::initJNI);
+
+void ${proxyClass.namespace}::${proxyClass.className}::initJNI(){
+    std::cout << "Initializing ${proxyClass.namespace}::${proxyClass.className} bridge... " << std::endl;
+    JNIEnv*env=com::tecnyse::integration::JNIBridge::getJNIEnv();
+
+    java_class=env->FindClass("${proxyClass.namespace.replace("::", "/")}/${proxyClass.className}" );
+    CHECKERROR(env);
+
+#foreach($method in $proxyClass.methods)
+    ${method.uniqueName}_id=env->GetMethodID(java_class,"$method.name" ,"$method.signature" );
+    CHECKERROR(env);
+#end
+}
+
+#foreach($method in $proxyClass.methods)
+$method.returnType.typeName ${proxyClass.namespace}::${method.name}(#foreach( $param in $method.parameters ) ${param.type.typeName} ${param.name}#commaIfNeeded($velocityCount $method.parameters)#end ){
+    JNIEnv* env = com::tecnyse::integration::JNIBridge::getJNIEnv();
+
+#set($params = "")
+#if(!${method.parameters.empty})
+    #set($params = "#foreach( $param in $method.parameters ), #javaParam($param)#end")
+#end
+#if ($method.returnType.typeName == "void")
+    env->CallVoidMethod(getJObject(), ${method.uniqueName}_id${params});
+#else
+    #set ($returnType = "#jniReturnType($method.returnType)")
+    $returnType result = env->#jniMethodCallName($method.returnType)(getJObject(), ${method.uniqueName}_id${params});
+#end
+    CHECKERROR(env);
+
+#if ($method.returnType.typeName != "void")
+#if ($returnTupe != "jobject")
+    return result;
+#else
+    return new ${method.returnType.typeName}(result);
+#end
+#end
+
+}
+
+#end

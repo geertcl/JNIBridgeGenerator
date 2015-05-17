@@ -1,0 +1,43 @@
+## Copyright (c) 2015 Geert Claeys, Apache License 2.0
+#parse("/com/tecnyse/integration/template/bridge_macros.vm")
+#ifndef ${proxyClass.header}
+\#define ${proxyClass.header}
+
+\#include <jni.h>
+\#include <string>
+
+\#include <com/tecnyse/integration/static_init.h>
+
+#foreach( $dependency in $proxyClass.dependencies)
+\#include <${dependency.includeName}>
+#end
+
+#foreach( $packageName in $proxyClass.packageNames )
+namespace $packageName {
+#end
+
+class $proxyClass.className {
+
+    static jclass java_class;
+    jobject object_instance;
+
+protected:
+#foreach( $method in $proxyClass.methods )
+    static jmethodID ${method.uniqueName}_id;
+#end
+
+public:
+#foreach($method in $proxyClass.methods)
+    virtual $method.returnType.typeName ${method.name}(#foreach( $param in $method.parameters ) ${param.type.typeName} ${param.name}#commaIfNeeded($velocityCount $method.parameters)#end );
+#end
+
+    static static_init_helper init_helper;
+    static void initJNI();
+};
+
+
+#foreach( $packageName in $proxyClass.packageNames )
+}
+#end
+
+#endif

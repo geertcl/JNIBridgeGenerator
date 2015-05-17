@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="TemplateDataLanguageMappings">
+    <file url="file://$PROJECT_DIR$/src/main/resources/com/tecnyse/integration/template/class/bridge_header_raw.vm" dialect="JAVA" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/com/tecnyse/integration/template/class/bridge_impl_raw.vm" dialect="GenericSQL" />
+  </component>
+</project>

@@ -1,0 +1,35 @@
+## Copyright (c) 2015 Geert Claeys, Apache License 2.0
+#macro(commaIfNeeded $index $list)
+#set ( $lastone = $list.size() - 1 )
+#if( $index <= $lastone ),#end
+#end
+#macro(javaParam $param)
+#if ($param.type.primitive)
+$param.name#else
+${param}->getJObject()#end
+#end
+#macro(jniMethodCallName $returnType)
+#if ($returnType.typeName == "int")
+CallIntMethod#elseif ($returnType.typeName == "short")
+CallShortMethod#elseif ($returnType.typeName == "float")
+CallFloatMethod#elseif ($returnType.typeName == "double")
+CallDoubleMethod#elseif($returnType.typeName == "long")
+CallLongMethod#elseif($returnType.typeName == "bool")
+CallBooleanMethod#elseif($returnType.typeName == "char")
+CallCharMethod#elseif($returnType.typeName == "unsigned char")
+CallByteMethod#elseif($returnType.typeName == "void")
+CallVoidMethod#else
+CallObjectMethod#end
+#end
+#macro(jniReturnType $returnType)
+#if ($returnType.typeName == "int")
+jint#elseif ($returnType.typeName == "short")
+jshort#elseif ($returnType.typeName == "float")
+jfloat#elseif ($returnType.typeName == "double")
+jdouble#elseif ($returnType.typeName == "long")
+jlong#elseif ($returnType.typeName == "bool")
+jboolean#elseif ($returnType.typeName == "char")
+jchar#elseif ($returnType.typeName == "unsigned char")
+jbyte#else
+jobject#end
+#end
