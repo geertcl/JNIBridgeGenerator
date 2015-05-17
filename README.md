@@ -4,12 +4,21 @@ The JNI Bridge Generator allows you to generate C++ proxies for Java classes, us
 
 ## License
 
-The JNIBridgeGenerator is licensed under the Apache License, v2: http://www.apache.org/licenses/LICENSE-2.0.html
+The JNIBridgeGenerator is licensed under the Apache License, v2: http://www.apache.org/licenses/LICENSE-2.0.html.
 
-## Repository structure
+## Features
 
-- JNIBridgeGenerator: the IntelliJ module for the generator
-- test: an IntelliJ module with samples.
+The JNIBridgeGenerator generates C++ proxies for
+
+- public Java classes,
+- public methods.
+
+The generated classes allow you to use the Java classes in your C++ applications as if they were normal C++ classes. You can create them, delete them, even inherit them.
+
+These features are in progress:
+
+- Generics, mapping to C++ templates
+- Interfaces, supporting C++ implementation of a Java interface.
 
 ## Usage
 
@@ -45,6 +54,11 @@ The above will generate 2 files in `com/tecnyse/samples/integration` (the packag
 
 - `myclass.h`: declares the JNI proxy for `MyClass` as a C++ class in the `com::tecnyse::samples::integration` namespace.
 - `myclass.cpp`: defines the JNI bindings for MyClass.
+
+## Repository structure
+
+- JNIBridgeGenerator: the IntelliJ module for the generator
+- test: an IntelliJ module with samples.
 
 ## Getting Started
 
