@@ -6,6 +6,11 @@ The JNI Bridge Generator allows you to generate C++ proxies for Java classes, us
 
 The JNIBridgeGenerator is licensed under the Apache License, v2: http://www.apache.org/licenses/LICENSE-2.0.html
 
+## Repository structure
+
+- JNIBridgeGenerator: the IntelliJ module for the generator
+- test: an IntelliJ module with samples.
+
 ## Usage
 
 Add the `@JNIProxy` annotation on
