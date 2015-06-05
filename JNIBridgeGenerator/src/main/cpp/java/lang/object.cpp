@@ -110,12 +110,12 @@ const char* java::lang::Object::toString() const {
 	return s;
 }
 
-void java::lang::Object::toString( std::string& aTarget ) const {
+void java::lang::Object::toString( std::string& target ) const {
 	JNIEnv* env = com::tecnyse::integration::JNIBridge::getJNIEnv();
 	TIMED_CALL(jstring java_string = (jstring) env->CallObjectMethod(object_instance, to_string_id), "Object.toString()");
 	CHECKERROR(env);
 	TIMED_CALL(const char* s = env->GetStringUTFChars(java_string, NULL), "GetStringUTFChars");
-	aTarget = s;
+	target = s;
 	TIMED_CALL(env->ReleaseStringUTFChars(java_string, s), "ReleaseStringUTFChars");
 	CHECKERROR(env);
 }
